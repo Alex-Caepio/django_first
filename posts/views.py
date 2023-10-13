@@ -57,14 +57,27 @@ def my_posts(request, post_id):
          'result_count': result_dict['result_count']})
 
 
+def get_all_posts(request):
+    result = []
+    posts = Post.objects.all().filter(id__gt=0).order_by('-id')
+    for post in posts:
+        result.append({'id': post.id, 'title': post.title, 'text': post.text})
+
+    return JsonResponse({'posts': result})
+
+
 def create_post(request):
     title = json.loads(request.body.decode('utf-8')).get('title', '')
     text = json.loads(request.body.decode('utf-8')).get('text', '')
+    category = json.loads(request.body.decode('utf-8')).get('category', '')
 
-    new_post = Post(title=title, text=text)
+    new_post = Post(title=title, text=text, category=category)
     new_post.save()
 
-    return JsonResponse({'id': new_post.id, 'title': new_post.title, 'text': new_post.text}, status=201)
+    return JsonResponse(
+        {'id': new_post.id, 'title': new_post.title, 'text': new_post.text, 'category': new_post.category,
+         'created_at': new_post.created_at},
+        status=201)
 
 
 def update_post(request, post_id):
