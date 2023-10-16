@@ -4,6 +4,10 @@ from django.db.models import signals
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+CREATED = 'created'
+UPDATED = 'updated'
+DELETED = 'deleted'
+
 
 # Create your models here.
 class Post(models.Model):
@@ -14,6 +18,17 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    status = models.CharField(max_length=100, default=CREATED)
+    created_at = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return self.text
 
 
 # @receiver(signals.pre_save, sender=Post)

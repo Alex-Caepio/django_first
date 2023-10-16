@@ -6,7 +6,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 import json
-from .models import Post
+from .models import Post, Comment
 from django.db.models import Count
 from django.shortcuts import get_object_or_404 as get_or_404
 
@@ -133,3 +133,37 @@ def filter_and_update(request):
         updated_posts.append({'id': post.id, 'title': post.title, 'text': post.text})
 
     return JsonResponse({'updated_posts': updated_posts})
+
+
+def create_comment(request):
+    post_id = json.loads(request.body.decode('utf-8')).get('post_id', '')
+    text = json.loads(request.body.decode('utf-8')).get('text', '')
+
+    # save
+    post = Comment(post_id=post_id, text=text)
+    post.save()
+
+    # Comment.objects.bulk_create([post1])
+    # Post.objects.bulk_create([post])
+    # bulk_update
+    return JsonResponse({'id': post.id, 'text': post.text, 'post': post.post_id})
+
+
+def get_comment_by_post(request, posts_id):
+    # post = Post(id=posts_id)
+    # comments = Comment.objects.filter(post_id=post)
+
+    post = Post.objects.get(id=posts_id)
+    comments = post.comments.all()
+
+    result = []
+
+    for comment in comments:
+        result.append({'id': comment.id, 'text': comment.text, 'post_id': comment.post_id})
+
+    return JsonResponse({'comments': result})
+
+
+def change_status_comment_by_post_id(request, post_id, status):
+    comment = Comment.objects.filter(post_id=post_id).update(status=status)
+    return JsonResponse({'comment': 'Changes made'})
