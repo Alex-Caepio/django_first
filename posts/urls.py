@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import PostView, DetailedPost
+from .views import (PostView, DetailedPost, WalletView, DetailedWallet, FormRender, EditWalletView, EditFormRender,
+                    DeleteWallet)
 
 urlpatterns = [
     path('all/<int:post_id>', PostView.as_view(), name='posts'),
@@ -17,4 +18,10 @@ urlpatterns = [
     # path('change_comment_status/<int:post_id>/<str:status>', views.change_status_comment_by_post_id,
     #      name='change_status_comment_by_post_id'),
     path('get', PostView.as_view(), name='get'),
+    path('wallet', WalletView.as_view(), name='wallet'),
+    path('wallet/<int:wallet_id>', DetailedWallet.as_view(), name='wallet'),
+    path('wallet/form', FormRender.as_view(), name='wallet_form'),
+    path('wallet/<int:wallet_id>/edit', EditWalletView.as_view(), name='wallet_edit'),
+    path('wallet/edit/form/<int:wallet_id>', EditFormRender.as_view(), name='edit_wallet_form'),
+    path('wallet/delete/<int:wallet_id>', DeleteWallet.as_view(), name='wallet_delete'),
 ]

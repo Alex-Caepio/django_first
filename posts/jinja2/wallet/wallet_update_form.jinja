@@ -1,0 +1,23 @@
+{% extends 'wallet/base_page.jinja' %}
+
+{% block title %}
+    <title>Редактирование кошелька</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Редактирование кошелька</h1>
+    <form action="{{ url ('wallet_edit', args=[wallet_id]) }}" method="post" enctype="multipart/form-data">
+        <label>
+            <input type="text" name="name" placeholder="name">
+        </label>
+        <label>
+            <input type="text" name="currency" placeholder="currency">
+        </label>
+        <label>
+            <input type="text" name="balance" placeholder="balance">
+        </label>
+        <button type="submit">Изменить</button>
+
+    </form>
+
+{% endblock %}

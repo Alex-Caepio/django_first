@@ -1,0 +1,19 @@
+{% extends 'wallet/base_page.jinja' %}
+
+{% block title %}
+    <title>Wallets</title>
+{% endblock %}
+
+{% block content %}
+    <p>
+        {% for wallet in wallets %}
+
+            {{ wallet.id }}. Name: {{ wallet.name }} with currency: {{ wallet.currency }} and ballance:
+            {{ wallet.balance }}
+            <br>
+            <li><a href="wallet/{{ wallet.id }}">Detail</a></li>
+        {% endfor %}
+    </p>
+    <button onclick="window.location.href='wallet/form'">Создать новый кошелек</button>
+{% endblock %}
+```
