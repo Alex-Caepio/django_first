@@ -1,0 +1,14 @@
+{% extends 'wallet/base_page.jinja' %}
+
+{% block title %}
+
+    <title>Кошелек пользователя {{ wallet.name }} </title>
+
+{% endblock %}
+
+
+{% block content %}
+    <p>Name: {{ wallet.name }}, Currency: {{ wallet.currency }}, Balance: {{ wallet.balance }}</p>
+    <button onclick="window.location.href='edit/form/{{ wallet.id }}'">Edit</button>
+    <button onclick="window.location.href='delete/{{ wallet.id }}'">Delete</button>
+{% endblock %}
